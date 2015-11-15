@@ -11,6 +11,8 @@
 		0451C7141BF70D7500034103 /* DvdCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0451C7131BF70D7500034103 /* DvdCollectionViewCell.swift */; };
 		047417551BF6B94300452F30 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047417541BF6B94300452F30 /* Reachability.swift */; };
 		048782FF1BF63855005A9EEE /* DetailMovieViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048782FE1BF63855005A9EEE /* DetailMovieViewController.swift */; };
+		048E7EEE1BF83548003EE45E /* dvds.png in Resources */ = {isa = PBXBuildFile; fileRef = 048E7EED1BF83548003EE45E /* dvds.png */; };
+		048E7EF01BF8359F003EE45E /* movies.png in Resources */ = {isa = PBXBuildFile; fileRef = 048E7EEF1BF8359F003EE45E /* movies.png */; };
 		0492763C1BF0CCA800A80BBB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0492763B1BF0CCA800A80BBB /* AppDelegate.swift */; };
 		0492763E1BF0CCA800A80BBB /* MovieViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0492763D1BF0CCA800A80BBB /* MovieViewController.swift */; };
 		049276411BF0CCA800A80BBB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0492763F1BF0CCA800A80BBB /* Main.storyboard */; };
@@ -25,6 +27,8 @@
 		0451C7131BF70D7500034103 /* DvdCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DvdCollectionViewCell.swift; sourceTree = "<group>"; };
 		047417541BF6B94300452F30 /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		048782FE1BF63855005A9EEE /* DetailMovieViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailMovieViewController.swift; sourceTree = "<group>"; };
+		048E7EED1BF83548003EE45E /* dvds.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dvds.png; sourceTree = "<group>"; };
+		048E7EEF1BF8359F003EE45E /* movies.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = movies.png; sourceTree = "<group>"; };
 		049276381BF0CCA800A80BBB /* Rotten Tomatoes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Rotten Tomatoes.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0492763B1BF0CCA800A80BBB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0492763D1BF0CCA800A80BBB /* MovieViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieViewController.swift; sourceTree = "<group>"; };
@@ -74,6 +78,8 @@
 				047417541BF6B94300452F30 /* Reachability.swift */,
 				0492763B1BF0CCA800A80BBB /* AppDelegate.swift */,
 				0492763D1BF0CCA800A80BBB /* MovieViewController.swift */,
+				048E7EEF1BF8359F003EE45E /* movies.png */,
+				048E7EED1BF83548003EE45E /* dvds.png */,
 				0492763F1BF0CCA800A80BBB /* Main.storyboard */,
 				049276421BF0CCA800A80BBB /* Assets.xcassets */,
 				049276441BF0CCA800A80BBB /* LaunchScreen.storyboard */,
@@ -166,6 +172,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				049276461BF0CCA800A80BBB /* LaunchScreen.storyboard in Resources */,
+				048E7EF01BF8359F003EE45E /* movies.png in Resources */,
+				048E7EEE1BF83548003EE45E /* dvds.png in Resources */,
 				049276431BF0CCA800A80BBB /* Assets.xcassets in Resources */,
 				049276411BF0CCA800A80BBB /* Main.storyboard in Resources */,
 			);

@@ -37,13 +37,13 @@ class DvdViewController: UIViewController ,UICollectionViewDataSource, UICollect
     let dvdPoster = dvdMovies[indexPath.row]["posters"] as! NSDictionary
     let dvdImageStr = dvdPoster["thumbnail"] as! String
     let dvdImageUrl = NSURL(string: dvdImageStr)
-    print(dvdImageUrl)
+    print("dcd Image: ",dvdImageUrl)
     cell.dvdMovieImage.setImageWithURL(dvdImageUrl!)
     
     
     // Use the outlet in our custom class to get a reference to the UILabel in the cell
 //    cell.myLabel.text = self.items[indexPath.item]
-    cell.backgroundColor = UIColor.yellowColor() // make cell more visible in our example project
+    cell.backgroundColor = UIColor.brownColor() // make cell more visible in our example project
     
     return cell
   }
@@ -68,7 +68,7 @@ class DvdViewController: UIViewController ,UICollectionViewDataSource, UICollect
       
       let json = try! NSJSONSerialization.JSONObjectWithData(data!, options: .AllowFragments) as! NSDictionary
       
-      movies = json["movies"] as! [NSDictionary]
+      self.dvdMovies = json["movies"] as! [NSDictionary]
       //      print("movies", self.movies)
       
       dispatch_async(dispatch_get_main_queue(), { () -> Void in

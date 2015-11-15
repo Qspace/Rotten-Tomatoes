@@ -30,7 +30,13 @@ class MovieViewController: UIViewController, UITableViewDelegate, UITableViewDat
     super.viewDidLoad()
     // Do any additional setup after loading the view, typically from a nib.
     
+    // custom network label
     networkLabel.hidden = true
+    networkLabel.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.8)
+    networkLabel.alpha = 0
+    networkLabel.textColor = UIColor.whiteColor()
+    networkLabel.textAlignment = .Center
+    networkLabel.text = "Network connection error"
     
     refreshControl = UIRefreshControl()
     refreshControl.addTarget(self, action: "onRefresh", forControlEvents: UIControlEvents.ValueChanged)
@@ -45,19 +51,21 @@ class MovieViewController: UIViewController, UITableViewDelegate, UITableViewDat
     SwiftLoader.setConfig(config)
     SwiftLoader.show(animated: true)
     
-    // Network checking use Reachablity
-    if Reachability.isConnectedToNetwork() == true {
-      print("Internet connection OK")
-    } else {
-      print("Internet connection FAILED")
-      networkLabel.text = "Network connection error"
-      networkLabel.hidden = false
-      SwiftLoader.hide()
-    }
-    
     fetchMovies(dataURL)
     
     
+  }
+  
+  func showNetworkErr() {
+    print("Internet connection FAILED")
+    networkLabel.hidden = false
+    networkLabel.alpha = 0
+    let offset = 3.0
+    UIView.animateWithDuration(offset, animations: {
+      self.networkLabel.alpha = 1
+    })
+    SwiftLoader.hide()
+
   }
   
   func delay(delay:Double, closure:()->()) {
@@ -70,8 +78,11 @@ class MovieViewController: UIViewController, UITableViewDelegate, UITableViewDat
   }
   
   func onRefresh() {
+    SwiftLoader.show(animated: true)
     delay(2, closure: {
       self.refreshControl.endRefreshing()
+      SwiftLoader.hide()
+      self.fetchMovies(self.dataURL)
     })
   }
   
@@ -89,7 +100,7 @@ class MovieViewController: UIViewController, UITableViewDelegate, UITableViewDat
       let imageUrlStr = posterDict["thumbnail"] as! String
       let imageUrl = NSURL(string: imageUrlStr)
       
-      print("image: ",imageUrl)
+//      print("image: ",imageUrl)
 
       cell.posterImageView.setImageWithURL(imageUrl!)
     }
@@ -107,13 +118,18 @@ class MovieViewController: UIViewController, UITableViewDelegate, UITableViewDat
   }
   
   func fetchMovies(urlString: String) {
-    
     let url = NSURL(string: urlString)
     let request = NSURLRequest(URL: url!)
     let session = NSURLSession.sharedSession()
     let task = session.dataTaskWithRequest(request) { (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void in
       guard error == nil else  {
         print("error loading from URL", error!)
+        // Network checking use Reachablity
+        if Reachability.isConnectedToNetwork() == true {
+          print("Internet connection OK")
+        } else {
+          self.showNetworkErr()
+        }
         return
       }
       
