@@ -45,7 +45,13 @@ class DetailMovieViewController: UIViewController {
     DetailMovieSynopsisLabel.textColor = UIColor.whiteColor()
     
     // Show the information about the movie select
-    let movieSelectDict = movies[rowSelectIndex]
+    var movieSelectDict = NSDictionary()
+    if searchActive == false {
+      movieSelectDict = movies[rowSelectIndex]
+    }
+    else {
+      movieSelectDict = filterMovies[rowSelectIndex]
+    }
     if movieSelectDict["title"] != nil {
       title = movieSelectDict["title"] as! String
       let ratings =  movieSelectDict["ratings"] as! NSDictionary
@@ -58,6 +64,7 @@ class DetailMovieViewController: UIViewController {
       let detailPosterDict = movieSelectDict["posters"] as! NSDictionary
       let detailImgStr = detailPosterDict["detailed"] as! String
       let url = NSURL(string: detailImgStr)
+      
       movieImageView.setImageWithURL(url!)
       fadeInImage()
       

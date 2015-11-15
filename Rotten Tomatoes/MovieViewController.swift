@@ -11,15 +11,19 @@ import AFNetworking
 import SwiftLoader
 
 var rowSelectIndex: Int = -1
+var searchActive : Bool = false
 
 var movies = [NSDictionary]()
+var filterMovies = [NSDictionary]()
 
-class MovieViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class MovieViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
   
   //Use refresh scroll for table View
   var refreshControl: UIRefreshControl!
   
   @IBOutlet var tableView: UITableView!
+  
+  @IBOutlet var movieSearchBar: UISearchBar!
   
   let dataURL = "https://coderschool-movies.herokuapp.com/movies?api_key=xja087zcvxljadsflh214"
   
@@ -28,6 +32,9 @@ class MovieViewController: UIViewController, UITableViewDelegate, UITableViewDat
   
   override func viewDidLoad() {
     super.viewDidLoad()
+    
+    movieSearchBar.delegate = self
+    
     // Do any additional setup after loading the view, typically from a nib.
     
     // custom network label
@@ -86,6 +93,54 @@ class MovieViewController: UIViewController, UITableViewDelegate, UITableViewDat
     })
   }
   
+  func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
+    searchActive = true;
+  }
+  
+  func searchBarTextDidEndEditing(searchBar: UISearchBar) {
+    searchActive = false;
+  }
+  
+  func searchBarCancelButtonClicked(searchBar: UISearchBar) {
+    searchActive = false;
+  }
+  
+  func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+    searchActive = false;
+  }
+  
+  func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+    filterMovies.removeAll()
+    if searchText.isEmpty == true {
+      searchActive = false
+      return
+    }
+    searchActive = true
+    
+    
+    for (var i = 0; i < movies.count; i++) {
+      let title =  movies[i]["title"] as! String
+      if title.lowercaseString.rangeOfString(searchText.lowercaseString) != nil {
+        print(title)
+        filterMovies.append(movies[i])
+      }
+    }
+    if filterMovies.count > 0 {
+      tableView.reloadData()
+    }
+//    filtered = data.filter({ (text) -> Bool in
+//      let tmp: NSString = text
+//      let range = tmp.rangeOfString(searchText, options: NSStringCompareOptions.CaseInsensitiveSearch)
+//      return range.location != NSNotFound
+//    })
+//    if(filtered.count == 0){
+//      searchActive = false;
+//    } else {
+//      searchActive = true;
+//    }
+//    self.tableView.reloadData()
+  }
+  
   override func didReceiveMemoryWarning() {
     super.didReceiveMemoryWarning()
     // Dispose of any resources that can be recreated.
@@ -93,10 +148,18 @@ class MovieViewController: UIViewController, UITableViewDelegate, UITableViewDat
   
   func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCellWithIdentifier("movieCell", forIndexPath: indexPath) as! MovieCell
-    cell.titleLabel.text = movies[indexPath.row]["title"] as? String
-    cell.synopsisLabel.text = movies[indexPath.row]["synopsis"] as? String
+    var movie = NSDictionary()
+    if searchActive == false {
+      movie = movies[indexPath.row]
+    }
+    else {
+      print(indexPath.row)
+      movie = filterMovies[indexPath.row]
+    }
+    cell.titleLabel.text = movie["title"] as? String
+    cell.synopsisLabel.text = movie["synopsis"] as? String
     // set poster image with URLImage
-    if let posterDict = movies[indexPath.row]["posters"] as? NSDictionary {
+    if let posterDict = movie["posters"] as? NSDictionary {
       let imageUrlStr = posterDict["thumbnail"] as! String
       let imageUrl = NSURL(string: imageUrlStr)
       
@@ -110,7 +173,13 @@ class MovieViewController: UIViewController, UITableViewDelegate, UITableViewDat
   }
   
   func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    if searchActive == false {
     return movies.count
+    }
+    else {
+      print("Filter count",filterMovies.count)
+      return filterMovies.count
+    }
   }
   
   func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -118,6 +187,7 @@ class MovieViewController: UIViewController, UITableViewDelegate, UITableViewDat
   }
   
   func fetchMovies(urlString: String) {
+    print("MovieUrlString: ",urlString)
     let url = NSURL(string: urlString)
     let request = NSURLRequest(URL: url!)
     let session = NSURLSession.sharedSession()
@@ -134,9 +204,13 @@ class MovieViewController: UIViewController, UITableViewDelegate, UITableViewDat
       }
       
       let json = try! NSJSONSerialization.JSONObjectWithData(data!, options: .AllowFragments) as! NSDictionary
-      
-      movies = json["movies"] as! [NSDictionary]
+      if searchActive == false {
+        movies = json["movies"] as! [NSDictionary]
 //      print("movies", self.movies)
+      }
+      else {
+          filterMovies = json["movies"] as! [NSDictionary]
+      }
       
       dispatch_async(dispatch_get_main_queue(), { () -> Void in
         self.tableView.reloadData()
