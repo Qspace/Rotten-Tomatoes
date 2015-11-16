@@ -128,17 +128,6 @@ class MovieViewController: UIViewController, UITableViewDelegate, UITableViewDat
     if filterMovies.count > 0 {
       tableView.reloadData()
     }
-//    filtered = data.filter({ (text) -> Bool in
-//      let tmp: NSString = text
-//      let range = tmp.rangeOfString(searchText, options: NSStringCompareOptions.CaseInsensitiveSearch)
-//      return range.location != NSNotFound
-//    })
-//    if(filtered.count == 0){
-//      searchActive = false;
-//    } else {
-//      searchActive = true;
-//    }
-//    self.tableView.reloadData()
   }
   
   override func didReceiveMemoryWarning() {
